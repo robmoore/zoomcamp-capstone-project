@@ -10,6 +10,6 @@ RUN pipenv install --system --deploy
 
 COPY predict.py *.bin ./
 
-EXPOSE 5000
+ENV PORT=5000
 
-ENTRYPOINT ["gunicorn", "--bind=0.0.0.0:5000", "predict:app"]
+CMD ["gunicorn", "predict:app"]
