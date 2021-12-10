@@ -8,7 +8,7 @@ COPY Pipfile Pipfile.lock ./
 
 RUN pipenv install --system --deploy
 
-COPY predict.py *.bin ./
+COPY . ./
 
 ENV PORT=5000
 

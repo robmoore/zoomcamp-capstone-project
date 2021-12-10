@@ -1,5 +1,6 @@
 project=zoomcamp-capstone
 project_dir=/app
+url=http://0.0.0.0:5000/predict
 
 .PHONY: build
 build:
@@ -13,19 +14,25 @@ shell: build
 pretty: build
 	docker run --rm -v $(PWD):$(project_dir) $(project) bash -c "black $(project_dir) && isort --atomic $(project_dir)"
 
-#.PHONY: pipenv-update
-#pipenv-update: build
-#	docker run --rm -v $(PWD):$(project_dir) $(project) pipenv update
-
 .PHONY: run-service
 run-service: build
 	docker run --rm -p 5000:5000 -e PORT=5000 $(project)
 
-#  heroku container:push web --app zoomcamp-capstone
-#  heroku container:release web --app zoomcamp-capstone
-#  heroku logs --tail --app zoomcamp-capstone
+run-client-remote: url=https://$(project).herokuapp.com/predict
+run-client-local run-client-remote:
+	pipenv run python predict_client.py --url $(url)
 
-# TODO Make client configurable in terms of URL base
-.PHONY: run-client
-run-client: build
-	docker run --rm $(project) python predict_client.py
+.PHONY: heroku-login
+heroku-login:
+	heroku login
+	heroku container:login
+
+.PHONY: heroku-deploy
+heroku-deploy: build
+	heroku container:push web --app zoomcamp-capstone
+	heroku container:release web --app zoomcamp-capstone
+
+.PHONY: heroku-tail
+heroku-tail:
+	 heroku logs --tail --app zoomcamp-capstone
+

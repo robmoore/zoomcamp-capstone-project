@@ -3,7 +3,7 @@ import pickle
 
 from flask import Flask, jsonify, request
 
-with open("dv_and_model.bin", mode="rb") as file:
+with open("bin/dv_and_model.bin", mode="rb") as file:
     dv, model = pickle.load(file)
 
 app = Flask("housing_prices")

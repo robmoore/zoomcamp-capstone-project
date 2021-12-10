@@ -13,7 +13,7 @@ def read_and_transform_data() -> tuple[
     DictVectorizer, np.ndarray, np.ndarray, pd.DataFrame
 ]:
     df = pd.read_table(
-        "AmesHousing.tsv",
+        "data/AmesHousing.tsv",
         index_col="PID",
     )
 
@@ -58,6 +58,7 @@ def read_and_transform_data() -> tuple[
     mask = (df["mas_vnr_type"] == "None") & (df["mas_vnr_area"].isna())
     df.loc[mask, "mas_vnr_area"] = df.loc[mask, "mas_vnr_area"].fillna(0.0)
 
+    # TODO is this still needed? check if property is a normal sale
     # Changed based on info at
     # https://beacon.schneidercorp.com/Application.aspx?AppID=165&LayerID=2145&PageTypeID=4&PageID=1108&KeyValue=0916386080
     df.loc[916386080, "electrical"] = "SBrkr"
@@ -110,7 +111,7 @@ def create_model(X_train: np.ndarray, y_train: np.ndarray) -> xgb.XGBRegressor:
 dict_vectorizer, X, y, df_test = read_and_transform_data()
 model = create_model(X, y)
 
-with open("dv_and_model.bin", "wb") as dv_and_model_bin:
+with open("bin/dv_and_model.bin", "wb") as dv_and_model_bin:
     pickle.dump((dict_vectorizer, model), dv_and_model_bin)
 
 df_test.to_pickle("test.bin")
