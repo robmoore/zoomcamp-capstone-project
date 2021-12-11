@@ -1,13 +1,15 @@
 import argparse
+import logging
 from typing import Tuple
 
-import numpy as np
 import pandas as pd
 import requests as requests
 from numpy.random import default_rng
 
 SEED = 42
 URL = "http://0.0.0.0:5000/predict"
+
+logger = logging.getLogger(__name__)
 
 
 def main(url: str) -> Tuple[float, float]:
@@ -19,9 +21,11 @@ def main(url: str) -> Tuple[float, float]:
     index = rng.integers(len(df))
 
     house = X.iloc[index].to_dict()
-    result = requests.post(url, json=house).json()
+    response = requests.post(url, json=house)
+    logger.debug(f"request: {response.request.body}")
+    logger.debug(f"response: {response.content}")
 
-    return result["price"], y[index]
+    return response.json()["price"], y[index]
 
 
 if __name__ == "__main__":
@@ -38,7 +42,5 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     predicted_price, actual_price = main(args.url)
-    # Remember to reverse conversion of price to log value
-    predicted_price = round(np.expm1(predicted_price))
 
     print(f"predicted price: {predicted_price}; actual price: {actual_price}")

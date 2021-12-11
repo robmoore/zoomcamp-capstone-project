@@ -1,6 +1,5 @@
 project=zoomcamp-capstone
 project_dir=/app
-url=http://0.0.0.0:5000/predict
 
 .PHONY: build
 build:
@@ -18,23 +17,27 @@ pretty: build
 run-service: build
 	docker run --rm -p 5000:5000 -e PORT=5000 $(project)
 
-run-client-remote: url=https://$(project).herokuapp.com/predict
-run-client-local run-client-remote:
-	pipenv run python predict_client.py --url $(url)
+.PHONY: run-client-local
+run-client-local: build
+	docker run --rm -v $(PWD):$(project_dir) $(project) bash -c "gunicorn --daemon predict:app && python predict_client.py"
+
+.PHONY: run-client-remote
+run-client-remote:
+	docker run --rm -v $(PWD):$(project_dir) $(project) python predict_client.py --url https://$(project).herokuapp.com/predict
 
 .PHONY: heroku-login
 heroku-login:
 	heroku login
-	heroku container:login
 
 .PHONY: heroku-deploy
 heroku-deploy: build
-	heroku container:push web --app zoomcamp-capstone
-	heroku container:release web --app zoomcamp-capstone
+	heroku container:login
+	heroku container:push web --app $(project)
+	heroku container:release web --app $(project)
 
 .PHONY: heroku-tail
 heroku-tail:
-	 heroku logs --tail --app zoomcamp-capstone
+	 heroku logs --tail --app $(project)
 
 data: build
 	docker run -it --rm -v $(PWD):$(project_dir) $(project) ./download-data.sh
