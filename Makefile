@@ -8,7 +8,7 @@ build:
 
 .PHONY: shell
 shell: build
-	 docker run -it --rm -v $(PWD):$(project_dir) $(project) /bin/bash
+	docker run -it --rm -v $(PWD):$(project_dir) $(project) /bin/bash
 
 .PHONY: pretty
 pretty: build
@@ -36,3 +36,9 @@ heroku-deploy: build
 heroku-tail:
 	 heroku logs --tail --app zoomcamp-capstone
 
+data: build
+	docker run -it --rm -v $(PWD):$(project_dir) $(project) ./download-data.sh
+
+bin: build
+	mkdir bin
+	docker run -it --rm -v $(PWD):$(project_dir) $(project) python train.py

@@ -1,4 +1,5 @@
 import argparse
+from typing import Tuple
 
 import numpy as np
 import pandas as pd
@@ -9,7 +10,7 @@ SEED = 42
 URL = "http://0.0.0.0:5000/predict"
 
 
-def main(url: str) -> tuple[float, float]:
+def main(url: str) -> Tuple[float, float]:
     df = pd.read_pickle("bin/test.bin")
     # noinspection PyPep8Naming
     X, y = df.drop("saleprice", axis=1), df["saleprice"]

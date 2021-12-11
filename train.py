@@ -1,4 +1,5 @@
 import pickle
+from typing import Tuple
 
 import numpy as np
 import pandas as pd
@@ -9,11 +10,11 @@ from sklearn.model_selection import train_test_split
 random_state = 42
 
 
-def read_and_transform_data() -> tuple[
+def read_and_transform_data() -> Tuple[
     DictVectorizer, np.ndarray, np.ndarray, pd.DataFrame
 ]:
     df = pd.read_table(
-        "data/AmesHousing.tsv",
+        "data/AmesHousing.txt",
         index_col="PID",
     )
 
@@ -108,10 +109,16 @@ def create_model(X_train: np.ndarray, y_train: np.ndarray) -> xgb.XGBRegressor:
     ).fit(X_train, y_train)
 
 
-dict_vectorizer, X, y, df_test = read_and_transform_data()
-model = create_model(X, y)
+def main():
+    # noinspection PyPep8Naming
+    dict_vectorizer, X, y, df_test = read_and_transform_data()
+    model = create_model(X, y)
 
-with open("bin/dv_and_model.bin", "wb") as dv_and_model_bin:
-    pickle.dump((dict_vectorizer, model), dv_and_model_bin)
+    with open("bin/dv_and_model.bin", "wb") as dv_and_model_bin:
+        pickle.dump((dict_vectorizer, model), dv_and_model_bin)
 
-df_test.to_pickle("test.bin")
+    df_test.to_pickle("bin/test.bin")
+
+
+if __name__ == "__main__":
+    main()
