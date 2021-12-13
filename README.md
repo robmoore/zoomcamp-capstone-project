@@ -1,7 +1,5 @@
 # Machine Learning Zoomcamp Capstone
 
-![Heroku](https://pyheroku-badge.herokuapp.com/?app=zoomcamp-capstone&style=flat)
-
 ## Introduction
 
 The organization [datatalks.club](https://datatalks.club) has provided an online course 
