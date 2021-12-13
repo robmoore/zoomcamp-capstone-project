@@ -13,9 +13,21 @@ app = Flask("housing_prices")
 logger = logging.getLogger(__name__)
 
 
+@app.route("/")
+def blank():
+    return (
+        "<!doctype html><html lang=en><meta charset=utf-8><title>This page intentionally left blank</title>"
+        "<body><p>This page intentionally left blank"
+    )
+
+
 @app.route("/predict", methods=["POST"])
+@app.errorhandler(400)
 def predict():
     house = request.get_json()
+
+    if not house:
+        return jsonify(error="Empty requests are not supported"), 400
 
     # noinspection PyPep8Naming
     X = dv.transform([house])
