@@ -22,6 +22,7 @@ def read_and_transform_data() -> Tuple[
 
     df.columns = df.columns.str.lower().str.replace(" ", "_")
 
+    # See comments in notebook.ipynb for an explanation of data cleaning steps below
     df["central_air"] = df["central_air"] == "Y"
     df["paved_drive"] = df["paved_drive"] == "Y"
 
@@ -63,15 +64,11 @@ def read_and_transform_data() -> Tuple[
 
     df.loc[916386080, "electrical"] = "SBrkr"
 
-    # Based on author's comments, removing atypical examples
     df = df[df.gr_liv_area <= 4000]
 
-    # Based on the author's comments, removing sales that fall outside of typical case (eg, ignoring foreclosures,
-    # unfinished homes, and family sales) since those sales are not representative
     df = df[df.sale_condition == "Normal"]
     df = df.drop(["sale_condition"], axis=1)
 
-    # Convert ordinal values to strings to aid in conversion below
     for col in ["ms_subclass", "overall_qual", "overall_cond"]:
         df[col] = df[col].astype("str")
 
