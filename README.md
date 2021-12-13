@@ -33,8 +33,8 @@ Some files of interest:
 
 ## Getting started
 
-This project requires [Docker](https://docs.docker.com/get-docker/) and optionally `make`. `make` is available typically 
-readily available in Linux and can be installed on other OSs using their respective toolsets:
+This project requires [Docker](https://docs.docker.com/get-docker/) and optionally [`make`](https://www.gnu.org/software/make/).
+`make` is available typically readily available in Linux and can be installed on other OSs using their respective toolsets:
 
 - Mac: [Homebrew](https://brew.sh/) or [xcode](https://apps.apple.com/us/app/xcode/)
 - Windows: [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/) or [Chocolatey](https://chocolatey.org/)
