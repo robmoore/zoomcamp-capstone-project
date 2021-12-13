@@ -73,11 +73,11 @@ is included for Heroku's sake so it knows how to start the service (see the Hero
 
 ## Usage example
 
-The service is available at https://zoomcamp-capstone.herokuapp.com/predict. A request provides the non-target variables
-defined in the data (see the [data documentation](data/DataDocumentation.txt) for details). The response contains a
+The service is available at https://zoomcamp-capstone.herokuapp.com/predict. A request should contain the non-target variables
+for a single property as defined in the [data documentation](data/DataDocumentation.txt). The response contains a
 predicted sales price value.
 
-The [example client](predict_client.py) sends a request using one of the rows from the test data set. The following is
+The [example client](predict_client.py) sends a request using a random entry from the test data set. The following is
 an example request and response made by the client.
 
 ### Request
