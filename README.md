@@ -1,5 +1,7 @@
 # Machine Learning Zoomcamp Capstone
 
+![Heroku](https://pyheroku-badge.herokuapp.com/?app=zoomcamp-capstone&style=flat)
+
 ## Introduction
 
 The organization [datatalks.club](https://datatalks.club) has provided an online course 
@@ -21,15 +23,15 @@ is meant to replace the commonly used [Boston housing dataset](http://dx.doi.org
 The project uses this data to produce a model and implements a service to produce predictions of the sale price of
 a house based on the features provided in the request itself.
 
-The following files are 
+Some files of interest:
 
-- [notebook.ipynb](notebook.ipynb) The Jupyter notebook used to perform EDA. Also, captures work to select and tune the 
+- [notebook.ipynb](notebook.ipynb): The Jupyter notebook used to perform EDA. Also, captures work to select and tune the 
   estimator used to create the model.
-- [train.py](train.py) Produces the model binary used by the service to perform predictions 
-- [predict.py](predict.py) Implementation of the prediction service using [Flask](https://flask.palletsprojects.com/)
-- [predict_client.py](predict_client.py) An example client used to request predictions
-- [Pipfile](Pipfile) Defines the project dependencies
-- [Procfile](Procfile) Used by [Heroku](https://heroku.com) to run the prediction service
+- [train.py](train.py): Produces the model binary used by the service to perform predictions 
+- [predict.py](predict.py): Implementation of the prediction service using [Flask](https://flask.palletsprojects.com/)
+- [predict_client.py](predict_client.py): An example client used to request predictions
+- [Pipfile](Pipfile): Defines the project dependencies
+- [Procfile](Procfile): Used by [Heroku](https://heroku.com) to run the prediction service
 
 ## Getting started
 

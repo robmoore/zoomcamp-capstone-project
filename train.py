@@ -3,9 +3,11 @@ from typing import Tuple
 
 import numpy as np
 import pandas as pd
-import xgboost as xgb
 from sklearn.feature_extraction import DictVectorizer
+from sklearn.linear_model import ElasticNet
 from sklearn.model_selection import train_test_split
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
 
 random_state = 42
 
@@ -59,16 +61,20 @@ def read_and_transform_data() -> Tuple[
     mask = (df["mas_vnr_type"] == "None") & (df["mas_vnr_area"].isna())
     df.loc[mask, "mas_vnr_area"] = df.loc[mask, "mas_vnr_area"].fillna(0.0)
 
-    # TODO is this still needed? check if property is a normal sale
-    # Changed based on info at
-    # https://beacon.schneidercorp.com/Application.aspx?AppID=165&LayerID=2145&PageTypeID=4&PageID=1108&KeyValue=0916386080
     df.loc[916386080, "electrical"] = "SBrkr"
 
     # Based on author's comments, removing atypical examples
     df = df[df.gr_liv_area <= 4000]
 
-    # TODO Should we train on everything but a handful of items for testing service?
-    # so shrink test size down to .05 or less?
+    # Based on the author's comments, removing sales that fall outside of typical case (eg, ignoring foreclosures,
+    # unfinished homes, and family sales) since those sales are not representative
+    df = df[df.sale_condition == "Normal"]
+    df = df.drop(["sale_condition"], axis=1)
+
+    # Convert ordinal values to strings to aid in conversion below
+    for col in ["ms_subclass", "overall_qual", "overall_cond"]:
+        df[col] = df[col].astype("str")
+
     df_train, df_test = train_test_split(
         df,
         test_size=0.2,
@@ -97,15 +103,17 @@ def read_and_transform_data() -> Tuple[
 
 
 # noinspection PyPep8Naming
-def create_model(X_train: np.ndarray, y_train: np.ndarray) -> xgb.XGBRegressor:
-    return xgb.XGBRegressor(
-        random_state=random_state,
-        n_jobs=-1,
-        learning_rate=0.1,
-        max_depth=10,
-        min_child_weight=10,
-        subsample=0.4,
-        colsample_bytree=0.7,
+def create_model(X_train: np.ndarray, y_train: np.ndarray):
+    return Pipeline(
+        [
+            ("scale", StandardScaler()),
+            (
+                "regr",
+                ElasticNet(
+                    alpha=0.01, l1_ratio=0.1, max_iter=2000, random_state=random_state
+                ),
+            ),
+        ]
     ).fit(X_train, y_train)
 
 

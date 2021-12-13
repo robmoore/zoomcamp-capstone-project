@@ -6,7 +6,6 @@ import pandas as pd
 import requests as requests
 from numpy.random import default_rng
 
-SEED = 42
 URL = "http://0.0.0.0:5000/predict"
 
 logger = logging.getLogger(__name__)
@@ -17,7 +16,7 @@ def main(url: str) -> Tuple[float, float]:
     # noinspection PyPep8Naming
     X, y = df.drop("saleprice", axis=1), df["saleprice"]
 
-    rng = default_rng(SEED)
+    rng = default_rng()
     index = rng.integers(len(df))
 
     house = X.iloc[index].to_dict()

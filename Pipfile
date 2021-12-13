@@ -16,8 +16,8 @@ matplotlib = "*"
 numpy = "*"
 requests = "*"
 appnope = {version = "*", markers = "sys_platform == 'linux' or sys_platform == 'darwin'"}
-black = "*"
 isort = "*"
+black = {extras = ["jupyter"], version = "*"}
 
 [dev-packages]
 
