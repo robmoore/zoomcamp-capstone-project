@@ -722,6 +722,11 @@
             ],
             "markers": "python_version >= '3.7'",
             "version": "==7.0.0"
+                "sha256:0a3e224ee753ac4dceeb0257c4a315c069dcc6f9f4ae0ad15c5ea84713d15e28",
+                "sha256:2c01f3f518fee736c3d3f999dd20e0a16febba17a0d60a3b0fd28fbdec14115d"
+            ],
+            "index": "pypi",
+            "version": "==6.5.1"
         },
         "nbformat": {
             "hashes": [
